@@ -18,8 +18,8 @@ app.add_middleware(
     allow_credentials=True
 )
 
-app.include_router(gateway.router)
 app.include_router(lock_router.router)
+app.include_router(gateway.router)
 app.include_router(mail.router)
 
 if __name__ == "__main__":
