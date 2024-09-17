@@ -34,7 +34,6 @@ class SeamLock(Seam):
     def __init__(self, api_key: str, event: Event) -> None:
         super().__init__(api_key=api_key)
         self.events = event
-        print(self.events)
         self.name = self.events.data_.name
         self.lock_id, self.lock_name = self.get_lock_id()
         self.passcode = self.create_passcode()
@@ -93,7 +92,7 @@ class SeamLock(Seam):
             access_code = self.access_codes.create(
                 device_id=self.lock_id,
                 code=str(self.passcode),
-                name=f"Access code for {self.name}",
+                name=f"{self.name}",
                 starts_at=self.start_format_time,
                 ends_at=self.end_format_time
             )

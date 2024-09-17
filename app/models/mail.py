@@ -20,8 +20,8 @@ template_SUCCESS = env.get_template('success.html')
 template_WAITING = env.get_template('waiting.html')
 
 class Mail:
-    sender_email = "gabsoundhelp@yandex.ru"
-    sender_password = "grynwbquarjgqqdc"
+    sender_email = os.getenv("YANDEX_MAIL")
+    sender_password = os.getenv("YANDEX_PASSCODE")
     smtp_server = "smtp.yandex.ru"
     smtp_port = 587
 

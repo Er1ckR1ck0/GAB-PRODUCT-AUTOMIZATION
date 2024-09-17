@@ -27,20 +27,20 @@ async def gateway(request: Request):
         body = await request.json()
         event = Event(**body)
         event_dump = event.model_dump_json()
-
-        if event.data_.status == 0:
-            if event.data_.cooperator_id in locks:
-                return await post_request("http://localhost:8000/api/seam/lock/create_access_code", event_dump)
-            else:
-                return await post_request("http://localhost:8000/api/seam/mail/send_notification", event_dump)
-        elif event.data_.status == 3:
-            response = await post_request("http://localhost:8000/api/seam/lock", event_dump)
-            if response.get("message"):
-                return {"message": "Сообщение на 'Ожидание предоплаты' отправлено"}
-            else:
-                return {"error": "Ошибка отправки Сообщение на 'Ожидание предоплаты'"}
-        else:
-            return {"error": "Неизвестный статус"}
+        match event.data_.status:
+            case 0:
+                if event.data_.cooperator_id in locks:
+                    return await post_request("http://localhost:8000/api/seam/lock/create_access_code", event_dump)
+                else:
+                    return await post_request("http://localhost:8000/api/seam/mail/send_notification", event_dump)
+            case 3:
+                response = await post_request("http://localhost:8000/api/seam/lock", event_dump)
+                if response.get("message"):
+                    return {"message": "Сообщение на 'Ожидание предоплаты' отправлено"}
+                else:
+                    return {"error": "Ошибка отправки Сообщение на 'Ожидание предоплаты'"}
+            case _:
+                return {"error": "Неизвестный статус"}
     except Exception as e:
         print(e)
         return {"error": f"Произошла ошибка: {e}"}
