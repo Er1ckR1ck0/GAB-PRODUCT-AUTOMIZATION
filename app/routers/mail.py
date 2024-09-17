@@ -1,11 +1,9 @@
-from fastapi import status, APIRouter, Request
+from fastapi import status, APIRouter
 from fastapi.responses import JSONResponse
-from ..models.lock import SeamLock, Lock
+from ..models.lock import Lock
 from ..models.mail import Mail
-from ..models.event import Event
+from ..models.event import EventLock
 from dotenv import load_dotenv
-import os
-import httpx
 import logging
 
 load_dotenv()
@@ -32,7 +30,7 @@ async def send_mail(request: Lock):
         )
 
 @router.post("/send_notification", status_code=status.HTTP_200_OK)
-async def send_notification(request: Event):
+async def send_notification(request: EventLock):
     try:
         mail = Mail(lock=request)
         mail.send_message()

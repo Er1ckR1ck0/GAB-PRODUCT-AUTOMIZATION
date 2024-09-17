@@ -7,7 +7,7 @@ from typing import Union, Tuple
 from jinja2 import Environment, FileSystemLoader
 from app.models.lock import Lock
 from app.models.branch import Branch
-from app.models.event import Event
+from app.models.event import EventLock
 
 # Get the absolute path of the templates_mail directory
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -25,10 +25,10 @@ class Mail:
     smtp_server = "smtp.yandex.ru"
     smtp_port = 587
 
-    def __init__(self, lock: Union[Lock, Event]):
+    def __init__(self, lock: Union[Lock, EventLock]):
         self.message = None
 
-        if isinstance(lock, Event):
+        if isinstance(lock, EventLock):
             self.lock = Lock(
                 name=lock.data_.name,
                 lock_id=None,
