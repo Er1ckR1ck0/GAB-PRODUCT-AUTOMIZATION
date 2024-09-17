@@ -9,8 +9,8 @@ app = FastAPI(
     version="v2.10",
 )
 
-@app.get("/", tags=["Root"])
-async def read_root():
+@app.get("/")
+async def root():
   return { 
     "message": "Welcome to my notes application, use the /docs route to proceed"
    }
@@ -27,5 +27,6 @@ app.include_router(lock_router.router)
 app.include_router(gateway_router.router)
 app.include_router(mail_router.router)
 
+
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="localhost", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
