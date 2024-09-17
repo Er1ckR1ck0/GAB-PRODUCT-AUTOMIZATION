@@ -13,8 +13,8 @@ from dotenv import load_dotenv
 
 from seam import Seam
 from .event import Event, EventLock
-from app.modules.branch_modules import *
-from app.modules.lock_modules import *
+from app.modules.branch import *
+from app.modules.lock import *
 from app.models.branch import Branch
 
 load_dotenv()

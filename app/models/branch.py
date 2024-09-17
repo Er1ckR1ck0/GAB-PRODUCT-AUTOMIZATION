@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Dict, Any, Optional, List, Union
-from app.modules.branch_modules import branch_dictionary
+from app.modules.branch import branch_dictionary
 
 
 class Branch(BaseModel):

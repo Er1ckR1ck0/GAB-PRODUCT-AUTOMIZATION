@@ -22,7 +22,6 @@ async def lock(request: EventLock):
     try:
         result = SeamLock(api_key=os.getenv("SEAM_API_KEY"), event=request)
         lock = result.create_access_code()
-        print(lock)
         logger.info(f"Lock created: {lock}")
         
         async with httpx.AsyncClient() as client:
