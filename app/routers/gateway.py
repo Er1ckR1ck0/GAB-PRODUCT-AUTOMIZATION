@@ -18,6 +18,10 @@ async def post_request(url: str, info: dict) -> dict:
         else:
             return {"error": response.json()}
 
+@router.get("/", status_code=status.HTTP_200_OK)
+async def gateway(request: Request):
+    return {"message": "Hello, World!"}
+
 @router.post("/main", status_code=status.HTTP_200_OK)
 async def gateway(request: Request):
     try:
