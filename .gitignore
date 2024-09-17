@@ -153,7 +153,20 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-
+app/models/__pycache__/__init__.cpython-312.pyc
+app/models/__pycache__/branch.cpython-312.pyc
+app/models/__pycache__/event.cpython-312.pyc
+app/models/__pycache__/lock.cpython-312.pyc
+app/models/__pycache__/mail.cpython-312.pyc
+app/modules/__pycache__/branch_modules.cpython-312.pyc
+app/modules/__pycache__/lock_modules.cpython-312.pyc
+app/routers/__pycache__/gateway.cpython-312.pyc
+app/routers/__pycache__/lock_router.cpython-312.pyc
+app/routers/__pycache__/mail.cpython-312.pyc
+python
+__pycache__/main.cpython-312.pyc
+.vscode/settings.json
+app/models/models.json
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
