@@ -9,6 +9,11 @@ app = FastAPI(
     version="v2.10",
 )
 
+@app.get("/", tags=["Root"])
+async def read_root():
+  return { 
+    "message": "Welcome to my notes application, use the /docs route to proceed"
+   }
 
 app.add_middleware(
     CORSMiddleware,

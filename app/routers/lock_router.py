@@ -26,7 +26,7 @@ async def lock(request: EventLock):
         logger.info(f"Lock created: {lock}")
         
         async with httpx.AsyncClient() as client:
-            response = await client.post("http://0.0.0.0:8000/api/seam/mail/send", data=lock.model_dump_json())
+            response = await client.post("http://localhost:8000/api/seam/mail/send", data=lock.model_dump_json())
             
             if response.status_code == 200:
                 return {"message": "Данные отправлены"}

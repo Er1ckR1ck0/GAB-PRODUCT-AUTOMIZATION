@@ -32,11 +32,11 @@ async def gateway(request: Request):
 
         if event.data_.status == 0:
             if event.data_.cooperator_id in locks:
-                return await post_request("http://0.0.0.0:8000/api/seam/lock/create_access_code", event_dump)
+                return await post_request("http://localhost:8000/api/seam/lock/create_access_code", event_dump)
             else:
-                return await post_request("http://0.0.0.0:8000/api/seam/mail/send_notification", event_dump)
+                return await post_request("http://localhost:8000/api/seam/mail/send_notification", event_dump)
         elif event.data_.status == 3:
-            response = await post_request("http://0.0.0.0:8000/api/seam/lock", event_dump)
+            response = await post_request("http://localhost:8000/api/seam/lock", event_dump)
             if response.get("message"):
                 return {"message": "Сообщение на 'Ожидание предоплаты' отправлено"}
             else:
