@@ -1,20 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import gateway_router, lock_router, mail_router
-
 import uvicorn
 
 app = FastAPI(
     title="GAB-PRODUCT-AUTOMIZATION",
     version="v2.10",
 )
-
-@app.get("/")
-async def root():
-  return { 
-    "message": "Welcome to my notes application, use the /docs route to proceed"
-   }
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -22,6 +14,12 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True
 )
+
+@app.get("/")
+async def root():
+  return { 
+    "message": "Welcome to my notes application, use the /docs route to proceed"
+   }
 
 app.include_router(lock_router.router)
 app.include_router(gateway_router.router)
