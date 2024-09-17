@@ -10,3 +10,5 @@ app/routers/__pycache__/lock_router.cpython-312.pyc
 app/routers/__pycache__/mail.cpython-312.pyc
 python
 __pycache__/main.cpython-312.pyc
+.vscode/settings.json
+app/models/models.json
