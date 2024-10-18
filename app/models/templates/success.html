@@ -85,7 +85,7 @@
   <div style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 36px; line-height: 21px; color: #5a5a5a;" align="center"><strong>{{lock.passcode if lock.passcode else "Ой-ой-ой. Пароля нет"}}#</strong></div>
 </td></tr></table><table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom"><tr><td style="padding-bottom: 10px;">
 	{% if lock.branch_info.has_double_passcode %}
-  <div style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 18px; color: #000000;" align="center">Код от входной двери: {{ lock.branch_info.has_double_passcode[0] }}#</div>
+  <div style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 18px; color: #000000;" align="center">{{ "Код от двери вокальной комнаты:" if lock.event_data.data_.cooperator_id == 25262 else "Код от вхожной двери" }} {{ lock.branch_info.has_double_passcode[0] }}#</div>
 	{% endif %}
 </td></tr></table><table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom"><tr><td height="0" style="padding: 20px 0px 0px; border-top: 1px solid #5a5a5a;">&nbsp;</td></tr></table>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom"><tr><td style="padding-bottom: 10px;">
@@ -144,7 +144,7 @@
 									</tr></table>
 							</td>
 							<td valign="top" align="right">
-								г.<span style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 21px;">г. Москва, {{lock.branch_info.address}}</span>
+								г.<span style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 21px;">г. Москва, {{lock.branch_info.address}}</span>}{
 								<table cellpadding="0" cellspacing="0" border="0" width="100%">
 									<tr>
 										<td height="10"></td>
@@ -159,8 +159,7 @@
 									</tr></table>
 							</td>
 							<td valign="top" align="right">
-								г.<span style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 21px;">{{lock.event_data.data_.comment}}</span>
-
+								г.<span style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 21px;">{{lock.event_data.data_.comment}}</span>}{
 								<table cellpadding="0" cellspacing="0" border="0" width="100%">
 									<tr>
 										<td height="10"></td>
@@ -175,8 +174,7 @@
 									</tr></table>
 							</td>
 							<td valign="top" align="right">
-								г.<span style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 21px;">{{lock.event_data.data_.custom_field2}}</span>
-              
+								г.<span style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 21px;">{{lock.event_data.data_.custom_field2}}</span>}{
 								<table cellpadding="0" cellspacing="0" border="0" width="100%">
 									<tr>
 										<td height="10"></td>
