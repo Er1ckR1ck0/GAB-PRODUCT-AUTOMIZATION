@@ -21,7 +21,7 @@ class Branch(BaseModel):
             cooperator_id=cooperator_id,
             name=branch_info['name'],
             address=branch_info['address'],
-            info=branch_info.get['info'],
+            info=branch_info['info'],
             has_double_passcode=branch_info['has_double_passcode'],
             recovery_passcode=branch_info['recovery passcode']
         )

@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 import httpx
 import logging
+import json
 
 load_dotenv(".env")
 
@@ -22,10 +23,10 @@ async def lock(request: EventLock):
     try:
         result = SeamLock(api_key=os.getenv("SEAM_API_KEY"), event=request).create_access_code()
         logger.info(f"Lock created: \n\n{result}")
-        
+
         async with httpx.AsyncClient() as client:
             response = await client.post("http://localhost:8000/api/seam/mail/send", data=result.model_dump_json())
-            
+
             if response.status_code == 200:
                 return {"message": "Данные отправлены"}
             else:

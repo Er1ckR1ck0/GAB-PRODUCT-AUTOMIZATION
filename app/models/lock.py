@@ -21,8 +21,6 @@ load_dotenv()
 
 class Lock(BaseModel):
     name: Optional[str]
-    lock_id: Optional[str]
-    lock_name: Optional[str]
     passcode: Optional[int]
     start_time: Optional[str]
     end_time: Optional[str]
@@ -56,8 +54,6 @@ class SeamLock(Seam):
     def create_lock_object(self) -> Lock:
         return Lock(
             name=self.name,
-            lock_id=self.lock_id,
-            lock_name=self.lock_name,
             passcode=self.passcode,
             start_time=self.start_format_time,
             end_time=self.end_format_time,
