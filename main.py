@@ -7,13 +7,6 @@ app = FastAPI(
     title="GAB-PRODUCT-AUTOMIZATION",
     version="v2.10",
 )
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-    allow_credentials=True
-)
 
 @app.get("/")
 async def root():
@@ -27,4 +20,11 @@ app.include_router(mail_router.router)
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True,
+        log_level="info",  # Уровень логирования
+        access_log=True  # Включение логирования доступа
+    )

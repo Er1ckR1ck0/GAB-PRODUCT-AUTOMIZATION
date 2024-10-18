@@ -19,8 +19,7 @@ logger = logging.getLogger(__name__)
 @router.post("/send", status_code=status.HTTP_200_OK)
 async def send_mail(request: Lock):
     try:
-        mail = Mail(lock=request)
-        mail.send_message()
+        Mail(lock=request).send_message()
         return {"message": "Сообщение отправлено"}
     except Exception as e:
         logger.error(f"Error sending mail: {e}")
@@ -32,8 +31,7 @@ async def send_mail(request: Lock):
 @router.post("/send_notification", status_code=status.HTTP_200_OK)
 async def send_notification(request: EventLock):
     try:
-        mail = Mail(lock=request)
-        mail.send_message()
+        Mail(lock=request).send_message()
         return {"message": "Уведомление отправлено"}
     except Exception as e:
         logger.error(f"Error sending notification: {e}")

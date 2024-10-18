@@ -1,7 +1,7 @@
 from fastapi import status, APIRouter, Request
 from fastapi.responses import JSONResponse
 from ..models.lock import SeamLock
-from ..models.event import Event, EventLock
+from ..models.event import EventLock
 from dotenv import load_dotenv
 import os
 import httpx
@@ -20,12 +20,11 @@ logger = logging.getLogger(__name__)
 @router.post("/lock/create_access_code", status_code=status.HTTP_200_OK)
 async def lock(request: EventLock):
     try:
-        result = SeamLock(api_key=os.getenv("SEAM_API_KEY"), event=request)
-        lock = result.create_access_code()
-        logger.info(f"Lock created: {lock}")
+        result = SeamLock(api_key=os.getenv("SEAM_API_KEY"), event=request).create_access_code()
+        logger.info(f"Lock created: \n\n{result}")
         
         async with httpx.AsyncClient() as client:
-            response = await client.post("http://localhost:8000/api/seam/mail/send", data=lock.model_dump_json())
+            response = await client.post("http://localhost:8000/api/seam/mail/send", data=result.model_dump_json())
             
             if response.status_code == 200:
                 return {"message": "Данные отправлены"}

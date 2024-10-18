@@ -12,7 +12,7 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 
 from seam import Seam
-from .event import Event, EventLock
+from .event import EventLock
 from app.modules.branch import *
 from app.modules.lock import *
 from app.models.branch import Branch
@@ -31,33 +31,14 @@ class Lock(BaseModel):
     branch_info: Branch
 
 class SeamLock(Seam):
-    def __init__(self, api_key: str, event: Event) -> None:
+    def __init__(self, api_key: str, event: EventLock) -> None:
         super().__init__(api_key=api_key)
         self.events = event
         self.name = self.events.data_.name
-        self.lock_id, self.lock_name = self.get_lock_id()
-        self.passcode = self.create_passcode()
         self.cooperator_id = self.events.data_.cooperator_id
         self.start_format_time, self.end_format_time = self.get_format_time()
-
-    def get_lock_id(self) -> Tuple[Optional[str], Optional[str]]:
-        try:
-            if self.events.data_.cooperator_id in locks:
-                lock_name = locks[self.events.data_.cooperator_id]
-                lock = next((lock for lock in self.locks.list() if lock.properties.name == lock_name), None)
-                return (lock.device_id, lock_name) if lock else (None, None)
-            else:
-                return None, None
-        except Exception as e:
-            logging.error(f"Error occurred in get_lock_id: {e}")
-            return None, None
-
-    def create_passcode(self) -> Optional[int]:
-        try:
-            return randint(10000, 99999)
-        except Exception as e:
-            logging.error(f"Error occurred in create_passcode: {e}")
-            return None
+        self.passcode = str(randint(10000, 99999))
+        self.lock_id = locks[self.cooperator_id]
 
     def get_format_time(self) -> Tuple[str, str]:
         try:
@@ -87,29 +68,33 @@ class SeamLock(Seam):
 
     def create_access_code(self) -> Optional[object]:
         try:
-            if not all([self.lock_id, self.passcode, self.start_format_time, self.end_format_time]):
-                raise ValueError("Missing required data_ for creating access code")
-            access_code = self.access_codes.create(
-                device_id=self.lock_id,
-                code=str(self.passcode),
-                name=f"{self.name}",
-                starts_at=self.start_format_time,
-                ends_at=self.end_format_time
-            )
+            if isinstance(self.lock_id, list):
+                for lock_id in self.lock_id:
+                    self.access_codes.create(
+                        device_id=lock_id,
+                        code=str(self.passcode),
+                        name=self.name,
+                        starts_at=self.start_format_time,
+                        ends_at=self.end_format_time
+                    )
             return self.create_lock_object()
         except Exception as e:
             logging.error(f"Error creating access code: {e}")
             self.passcode = Branch.from_dict(self.cooperator_id).recovery_passcode if Branch.from_dict(self.cooperator_id) else None
             return {"error": f"Error creating access code: {e}"}
 
-    def remove_access_code(self) -> Optional[str]:
-        try:
-            if not all([self.lock_id, self.passcode]):
-                raise ValueError("Missing required data_ for removing access code")
-            return self.access_codes.delete(
-                device_id=self.lock_id,
-                code=str(self.passcode)
-            )
-        except Exception as e:
-            logging.error(f"Error removing access code: {e}")
-            return http.HTTPStatus.INTERNAL_SERVER_ERROR
+    # def remove_access_code(self) -> Optional[str]:
+    #     try:
+    #         if isinstance(self.lock_id, list):
+    #             for lock_id in self.lock_id:
+    #                 self.access_codes.delete(
+    #                     device_id=self.lock_id,
+    #                     access_code_id=
+    #                 )
+    #         return self.access_codes.delete(
+    #             device_id=self.lock_id,
+    #             code=str(self.passcode)
+    #         )
+    #     except Exception as e:
+    #         logging.error(f"Error removing access code: {e}")
+    #         return http.HTTPStatus.INTERNAL_SERVER_ERROR

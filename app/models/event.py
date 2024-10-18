@@ -47,11 +47,6 @@ class BaseEvent(BaseModel):
     event_: Optional[str] = Field(..., alias="event")
     data_: EventData = Field(..., alias="data")
 
-
-class Event(BaseEvent):
-    pass
-
-
 class EventLock(BaseModel):
     from_: Optional[str]
     event_: Optional[str] 

@@ -13,17 +13,17 @@ class Branch(BaseModel):
 
     @classmethod
     def from_dict(cls, cooperator_id: int) -> 'Branch':
-        branch_info = branch_dictionary.get(cooperator_id)
+        branch_info = branch_dictionary[cooperator_id]
         if not branch_info:
             raise ValueError(f"No branch found for cooperator_id: {cooperator_id}")
         
         return cls(
             cooperator_id=cooperator_id,
-            name=branch_info.get('name', ''),
-            address=branch_info.get('address', ''),
-            info=branch_info.get('info', ''),
-            has_double_passcode=branch_info.get('has_double_passcode', False),
-            recovery_passcode=branch_info.get('recovery passcode', None)
+            name=branch_info['name'],
+            address=branch_info['address'],
+            info=branch_info.get['info'],
+            has_double_passcode=branch_info['has_double_passcode'],
+            recovery_passcode=branch_info['recovery passcode']
         )
 
     class Config:
