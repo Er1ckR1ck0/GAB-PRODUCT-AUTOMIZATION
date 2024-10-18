@@ -22,8 +22,15 @@ logger = logging.getLogger(__name__)
 async def lock(request: EventLock):
     try:
         result = SeamLock(api_key=os.getenv("SEAM_API_KEY"), event=request).create_access_code()
-        logger.info(f"Lock created: \n\n{result}")
 
+        if not result or "error" in result:  # Проверяем, что результат не пустой и не содержит ошибку
+            logger.error(f"Error creating lock: {result}")
+            return JSONResponse(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                content={"message": "Ошибка создания кода доступа", "error": result}
+            )
+
+        logger.info(f"Lock created: \n\n{result}")
         async with httpx.AsyncClient() as client:
             response = await client.post("https://gab-product-automization.vercel.app/api/seam/mail/send", data=result.model_dump_json(), timeout=60)
 
@@ -34,6 +41,7 @@ async def lock(request: EventLock):
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     content={"message": "Ошибка отправки данных", "error": response.json()}
                 )
+
     except httpx.HTTPError as e:
         logger.error(f"HTTP error occurred: {e}")
         return JSONResponse(
