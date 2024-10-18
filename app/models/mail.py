@@ -12,7 +12,6 @@ from app.models.event import EventLock
 # Get the absolute path of the templates_mail directory
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 
-print(template_dir)
 file_loader = FileSystemLoader(template_dir)
 env = Environment(loader=file_loader)
 
@@ -55,15 +54,19 @@ class Mail:
     def send_message(self):
         context = ssl.create_default_context()
         for sender in self.senders:
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                self.message = MIMEMultipart()
-                self.message["From"] = self.sender_email
-                self.message["Subject"] = self.title
-                server.starttls(context=context)
-                server.login(self.sender_email, self.sender_password)
+            try:
+                with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
+                    self.message = MIMEMultipart()
+                    self.message["From"] = self.sender_email
+                    self.message["Subject"] = self.title
+                    server.starttls(context=context)
+                    server.login(self.sender_email, self.sender_password)
 
-                html = self.customerMail
-                self.message['To'] = sender
-                self.message.attach(MIMEText(html, 'html'))
+                    html = self.customerMail
+                    self.message['To'] = sender
+                    self.message.attach(MIMEText(html, 'html'))
 
-                server.sendmail(self.sender_email, sender, self.message.as_string())
+                    server.sendmail(self.sender_email, sender, self.message.as_string())
+                    print(f"Email sent to {sender}")
+            except Exception as e:
+                print(f"Failed to send email to {sender}: {e}")

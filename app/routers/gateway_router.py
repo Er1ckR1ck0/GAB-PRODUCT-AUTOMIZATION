@@ -1,24 +1,15 @@
 from fastapi import status, APIRouter, Request
 from fastapi.responses import JSONResponse
 from ..models.event import Event
-import httpx
 from ..modules.lock import locks
 import logging
+import requests
 logger = logging.getLogger("gateway")
 logger.setLevel(logging.INFO)
 router = APIRouter(
     prefix="/api/gateway",
     tags=["Gateway"]
 )
-
-async def post_request(url: str, info: dict) -> dict:
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, data=info, timeout=60)
-        if response.status_code == 200:
-            return {"message": "Данные отправлены"}
-        else:
-            return {"error": response.json()}
-
 @router.get("/", status_code=status.HTTP_200_OK)
 async def gateway(request: Request):
     return {"message": "Hello, World!"}
@@ -36,9 +27,10 @@ async def gateway(request: Request):
                 case 0:
                     if event.data_.cooperator_id in locks:
                         logger.info(f"Creating access code for cooperator: {event.data_.cooperator_id}")
-                        return await post_request("https://gab-product-automization.vercel.app/api/seam/lock/create_access_code", event.model_dump_json())
+
+                        return requests.post("https://gab-product-automization.vercel.app/api/seam/lock/create_access_code", data=event.model_dump_json())
                 case 3:
-                    response = await post_request("https://gab-product-automization.vercel.app/api/seam/send_notification", event.model_dump_json())
+                    response = requests.post("https://gab-product-automization.vercel.app/api/seam/send_notification", data=event.model_dump_json())
                     if response.get("message"):
                         logger.info("Message sent to 'Ожидание предоплаты'")
                         return {"message": "Сообщение на 'Ожидание предоплаты' отправлено"}

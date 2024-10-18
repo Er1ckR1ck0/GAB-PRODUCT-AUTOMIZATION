@@ -7,6 +7,7 @@ import os
 import httpx
 import logging
 import json
+import requests
 
 load_dotenv(".env")
 
@@ -31,16 +32,15 @@ async def lock(request: EventLock):
             )
 
         logger.info(f"Lock created: \n\n{result}")
-        async with httpx.AsyncClient() as client:
-            response = await client.post("https://gab-product-automization.vercel.app/api/seam/mail/send", data=result.model_dump_json(), timeout=60)
+        response = requests.post("https://gab-product-automization.vercel.app/api/seam/mail/send", data=result.model_dump_json(), timeout=60)
 
-            if response.status_code == 200:
-                return {"message": "Данные отправлены"}
-            else:
-                return JSONResponse(
-                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                    content={"message": "Ошибка отправки данных", "error": response.json()}
-                )
+        if response.status_code == 200:
+            return {"message": "Данные отправлены"}
+        else:
+            return JSONResponse(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                content={"message": "Ошибка отправки данных", "error": response.json()}
+            )
 
     except httpx.HTTPError as e:
         logger.error(f"HTTP error occurred: {e}")
