@@ -1,6 +1,6 @@
 from fastapi import status, APIRouter, Request
 from fastapi.responses import JSONResponse
-from app.models.event import EventLock
+from ..models.event import Event
 import httpx
 from ..modules.lock import locks
 
@@ -25,7 +25,7 @@ async def gateway(request: Request):
 async def gateway(request: Request):
     try:
         body = await request.json()
-        event = EventLock(**body)
+        event = Event(**body)
         if event.event_ in ["event-create-record", "event-update-record"]:
             match event.data_.status:
                 case 0:

@@ -50,4 +50,7 @@ class BaseEvent(BaseModel):
 class EventLock(BaseModel):
     from_: Optional[str]
     event_: Optional[str] 
-    data_: EventData 
+    data_: EventData
+
+class Event(BaseEvent):
+    pass

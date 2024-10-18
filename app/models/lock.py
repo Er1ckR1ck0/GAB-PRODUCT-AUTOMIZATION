@@ -12,7 +12,7 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 
 from seam import Seam
-from .event import EventLock
+from .event import Event, EventLock
 from app.modules.branch import *
 from app.modules.lock import *
 from app.models.branch import Branch
@@ -31,7 +31,7 @@ class Lock(BaseModel):
     branch_info: Branch
 
 class SeamLock(Seam):
-    def __init__(self, api_key: str, event: EventLock) -> None:
+    def __init__(self, api_key: str, event: Event) -> None:
         super().__init__(api_key=api_key)
         self.events = event
         self.name = self.events.data_.name

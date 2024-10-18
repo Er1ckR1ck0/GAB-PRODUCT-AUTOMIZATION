@@ -1,7 +1,7 @@
 from fastapi import status, APIRouter, Request
 from fastapi.responses import JSONResponse
 from ..models.lock import SeamLock
-from ..models.event import EventLock
+from ..models.event import Event, EventLock
 from dotenv import load_dotenv
 import os
 import httpx
