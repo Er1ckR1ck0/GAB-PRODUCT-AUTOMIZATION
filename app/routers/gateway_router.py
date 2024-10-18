@@ -13,7 +13,7 @@ router = APIRouter(
 
 async def post_request(url: str, info: dict) -> dict:
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, data=info)
+        response = await client.post(url, data=info, timeout=60)
         if response.status_code == 200:
             return {"message": "Данные отправлены"}
         else:
@@ -38,7 +38,7 @@ async def gateway(request: Request):
                         logger.info(f"Creating access code for cooperator: {event.data_.cooperator_id}")
                         return await post_request("https://gab-product-automization.vercel.app/api/seam/lock/create_access_code", event.model_dump_json())
                 case 3:
-                    response = await post_request("https://gab-product-automization.vercel.app/api/seam/lock", event.model_dump_json())
+                    response = await post_request("https://gab-product-automization.vercel.app/api/seam/send_notification", event.model_dump_json())
                     if response.get("message"):
                         logger.info("Message sent to 'Ожидание предоплаты'")
                         return {"message": "Сообщение на 'Ожидание предоплаты' отправлено"}

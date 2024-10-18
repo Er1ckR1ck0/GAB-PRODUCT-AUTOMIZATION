@@ -42,7 +42,7 @@ class Mail:
             )
         else:
             self.lock = lock
-
+        print(self.lock)
         self.senders: list = [self.lock.event_data.data_.email, self.sender_email]
         self.customerMail, self.title = self.statusMail()
 
