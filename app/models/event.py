@@ -8,7 +8,7 @@ class EventData(BaseModel):
     updated_at: Optional[str]
     record: Optional[str]
     name: Optional[str]
-    price: Optional[str]
+    price: Optional[str] | Optional[int]
     phone: Optional[str]
     email: Optional[str]
     comment: Optional[str]
