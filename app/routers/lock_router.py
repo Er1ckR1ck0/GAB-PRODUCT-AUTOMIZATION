@@ -25,7 +25,7 @@ async def lock(request: EventLock):
         logger.info(f"Lock created: \n\n{result}")
 
         async with httpx.AsyncClient() as client:
-            response = await client.post("http://localhost:8000/api/seam/mail/send", data=result.model_dump_json())
+            response = await client.post("https://gab-product-automization.vercel.app/api/seam/mail/send", data=result.model_dump_json())
 
             if response.status_code == 200:
                 return {"message": "Данные отправлены"}
