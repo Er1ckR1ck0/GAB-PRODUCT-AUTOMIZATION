@@ -8,11 +8,13 @@ app = FastAPI(
     version="v2.10",
 )
 
-@app.get("/")
-async def root():
-  return { 
-    "message": "Welcome to my notes application, use the /docs route to proceed"
-   }
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=True
+)
 
 app.include_router(lock_router.router)
 app.include_router(gateway_router.router)
