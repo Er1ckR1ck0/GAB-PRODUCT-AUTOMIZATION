@@ -16,6 +16,10 @@ app.add_middleware(
     allow_credentials=True
 )
 
+@app.get("/")
+async def read_root():
+    return {"message": "Hello World"}
+
 app.include_router(lock_router.router)
 app.include_router(gateway_router.router)
 app.include_router(mail_router.router)
